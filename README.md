@@ -3,11 +3,17 @@
 ## System structure
 .
 ├── src/
+
 │   ├── Blockchain
+
 │   ├── PeerNode
+
 │   ├── RPC
+
 │   └── GUI
+
 ├── .config
+
 └── setup.py
 
 ### Blockchain
