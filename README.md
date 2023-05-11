@@ -35,7 +35,7 @@ The location where system parameters are stored and automatically configured.
 
 ## Communication
 
-All connections are encrypted using AES, and the key exchange mechanism used is CRYTAL-KYBER.
+All connections are encrypted using AES, and the key exchange mechanism used is ECC, also for signature.
 
 ## In details.
 
