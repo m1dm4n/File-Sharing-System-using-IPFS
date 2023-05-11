@@ -6,7 +6,7 @@
 .
 ├── src/
 │   ├── Blockchain
-│   ├── PeerNode
+│   ├── IPFSNode
 │   ├── RPC
 │   └── GUI
 ├── .config
@@ -17,7 +17,7 @@
  
 The place where the hash of the file is stored and ensures the security features of the system.
 
-### PeerNode
+### IPFSNode
 
 It plays the role of both a client and a server. The client sends files for storage, while the server receives requests to download files from other nodes.
 
