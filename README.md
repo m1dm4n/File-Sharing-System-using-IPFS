@@ -5,10 +5,11 @@
 ```
 .
 ├── src/
-│   ├── Blockchain
-│   ├── IPFSNode
-│   ├── RPC
-│   └── GUI
+│   ├── Blockchain/
+│   ├── IPFSNode/
+│   ├── RPC/
+│   └── GUI/
+|   |__ DHT/
 ├── .config
 └── setup.py
 ```
