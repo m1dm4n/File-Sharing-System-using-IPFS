@@ -1,4 +1,4 @@
-# File-Sharing-System-using-IPFS
+# A Secure File Sharing System Based on IPFS and Blockchain
 
 ## System structure
 
