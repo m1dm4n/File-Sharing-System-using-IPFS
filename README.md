@@ -128,4 +128,3 @@ Illustrating the interaction between a client, RPC (Remote Procedure Call), and 
 
 #### 4. Governance Incentives:
    - IPFS incentivizes network participants to participate in the governance of the network by allowing them to earn tokens for voting on important network decisions.
-   - Participants can earn tokens for participating in discussions and voting on proposals that help shape the future of the IPFS network.
