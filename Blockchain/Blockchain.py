@@ -1,6 +1,6 @@
 from .Block import *
 import time
-
+from typing import List, Dict
 NULL_HASH = '6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d'
 
 
@@ -24,11 +24,10 @@ class Blockchain:
         a valid hash.
         """
         GenesisBlock = Block(0, [], 0, NULL_HASH)
-        GenesisBlock.hash = GenesisBlock.compute_hash()
         self.SharedChain.append(GenesisBlock)
 
     @property
-    def LastBlock(self):
+    def LastBlock(self) -> Block:
         return self.SharedChain[-1]
 
     def AddNewBlock(self, block, proof):
@@ -39,15 +38,13 @@ class Blockchain:
         * The previous_hash referred in the block and the hash of latest block
           in the chain match.
         """
-        previous_hash = self.LastBlock.hash
-
+        previous_hash = self.LastBlock.compute_hash()
         if previous_hash != block.previous_hash:
             raise ValueError("Previous hash incorrect")
 
         if not Blockchain.IsValidProof(block, proof):
             raise ValueError("Block proof invalid")
 
-        block.hash = proof
         self.SharedChain.append(block)
 
     @staticmethod
@@ -79,22 +76,24 @@ class Blockchain:
                 block_hash == block.compute_hash())
 
     @classmethod
-    def VeriFyChain(cls, chain):
+    def VeriFyChain(cls, chain: List[Dict]):
         result = True
-        previous_hash = NULL_HASH
-
-        for block in chain:
-            block_hash = block.hash
-            # remove the hash field to recompute the hash again
-            # using `compute_hash` method.
-            delattr(block, "hash")
-
+        previous_hash = Block(0, [], 0, NULL_HASH).compute_hash()
+        for block_data in chain[1:]:
+            block = Block(
+                block_data["index"],
+                block_data["transactions"],
+                block_data["timestamp"],
+                block_data["previous_hash"],
+                block_data["nonce"]
+            )
+            block_hash = block_data["hash"]
             if not cls.IsValidProof(block, block_hash) or \
                     previous_hash != block.previous_hash:
                 result = False
                 break
 
-            block.hash, previous_hash = block_hash, block_hash
+            previous_hash = block_hash
 
         return result
 
@@ -113,7 +112,7 @@ class Blockchain:
             index=LastBlock.index + 1,
             transactions=self.unconfirmed_TX,
             timestamp=time.time(),
-            previous_hash=LastBlock.hash
+            previous_hash=LastBlock.compute_hash()
         )
 
         proof = self.ProofOfWork(new_block)
