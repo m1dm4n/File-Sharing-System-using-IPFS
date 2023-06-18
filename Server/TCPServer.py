@@ -7,12 +7,15 @@ import ssl
 from sqlalchemy import create_engine, Column, String, ForeignKey, Integer
 from sqlalchemy.orm import sessionmaker, relationship, declarative_base
 import base64
+import signal
 
 block_size = 4 * 1024 * 1024
-server_address = ('localhost', 5000)
+server_address = ('0.0.0.0', 5000)
 certificate_file = './enkai.id.vn/certificate.crt'
 private_key_file = './enkai.id.vn/ec-private-key.pem'
 db_connection_string = 'postgresql://postgres:hoang@localhost:5432/IPFS_manager'
+
+terminate_server = False
 
 Base = declarative_base()
 
@@ -66,6 +69,7 @@ def handle_register(data):
 
         response = {'success': True, 'message': 'Registration successful'}
 
+    print(response)
     return response
 
 def handle_login(data):
@@ -87,6 +91,7 @@ def handle_login(data):
     else:
         response = {'success': False, 'message': 'User not found'}
 
+    print(response)
     return response
 
 def handle_upload(data):
@@ -143,11 +148,12 @@ def handle_upload(data):
     else:
         response = {'success': False, 'message': 'User not found'}
 
+    print(response)
     return response
 
 def handle_download_request(data):
     file_hash = data['file_hash']
-    file_name = data['file_name']
+    #file_name = data['file_name']
     
     if not handle_login(data)['success']:
         return {'success': False, 'message': "You are not logged in"}
@@ -174,8 +180,7 @@ def handle_download_request(data):
                 'success': True,
                 'message': 'File downloaded successfully',
                 'file_content': encoded_content,
-                'file_hash': file_hash,
-                'file_name': file_name
+                'file_hash': file_hash
             }
         else:
             response = {
@@ -188,6 +193,7 @@ def handle_download_request(data):
             'message': 'File not found'
         }
 
+    print(response)
     return response
 
 def handle_download_request2(data):
@@ -250,34 +256,69 @@ def handle_download_request2(data):
 
     return response
 
-def handle_request(client_socket):
-    # Receive and parse the request
-    request_data = client_socket.recv(4096).decode()
-    request = json.loads(request_data)
+def handle_list_files(data):
+    username = data['username']
 
-    action = request['action']
-    data = request['data']
-
-    # Perform action based on the request
-    if action == 'register':
-        response = handle_register(data)
-    elif action == 'login':
-        response = handle_login(data)
-    elif action == 'upload':
-        response = handle_upload(data)
-    elif action == 'download':
-        response = handle_download_request2(data)
+    # Check if the user exists
+    user = session.query(User).filter_by(username=username).first()
+    if user:
+        files = session.query(File).filter_by(username=username).all()
+        file_list = [{'file_name': file.file_name, 'file_hash': file.file_hash} for file in files]
+        response = {'success': True, 'files': file_list}
     else:
-        response = {'success': False, 'message': 'Invalid action'}
+        response = {'success': False, 'message': 'User not found'}
 
-    # Send the response back to the client
-    response_data = json.dumps(response).encode()
-    client_socket.sendall(response_data)
+    print(response)
+    return response
+
+def handle_request(client_socket):
+    while True:
+        try:
+            # Receive and parse the request
+            request_data = client_socket.recv(4096).decode()
+            request = json.loads(request_data)
+
+            action = request['action']
+            data = request['data']
+            print(data)
+            
+            # Perform action based on the request
+            if action == 'register':
+                response = handle_register(data)
+            elif action == 'login':
+                response = handle_login(data)
+            elif action == 'upload':
+                response = handle_upload(data)
+            elif action == 'download':
+                if 'file_hash' in data:
+                    response = handle_download_request(data)
+                else:
+                    response = handle_download_request2(data)
+            elif action == 'list_files':
+                response = handle_list_files(data)
+            else:
+                response = {'success': False, 'message': 'Invalid action'}
+
+            # Send the response back to the client
+            response_data = json.dumps(response).encode()
+            client_socket.sendall(response_data)
+        except Exception as e:
+            print(e)
+            break
 
     # Close the client socket
     client_socket.close()
+    print('Client socket closed')
+    
+def signal_handler(signum, frame):
+    global terminate_server
+    print('Terminating the server...')
+    terminate_server = True
 
 if __name__ == '__main__':
+    # Set up signal handler for graceful termination
+    signal.signal(signal.SIGINT, signal_handler)
+
     # Load SSL/TLS context
     context = ssl.create_default_context(ssl.Purpose.CLIENT_AUTH)
     context.load_cert_chain(certfile=certificate_file, keyfile=private_key_file)
@@ -294,7 +335,7 @@ if __name__ == '__main__':
 
     print(f'TCP server listening on {server_address[0]}:{server_address[1]}')
 
-    while True:
+    while not terminate_server:
         client_socket, client_address = server_socket.accept()
         print(f'New connection from {client_address[0]}:{client_address[1]}')
 
@@ -303,3 +344,11 @@ if __name__ == '__main__':
 
         thread = threading.Thread(target=handle_request, args=(ssl_client_socket,))
         thread.start()
+        thread_id = thread.ident
+        print(f'Thread {thread_id} started')
+
+    # Close the server socket
+    server_socket.close()
+
+    print('Server terminated.')
+    

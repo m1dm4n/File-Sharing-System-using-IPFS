@@ -69,6 +69,14 @@ def download_user_files(username, password):
     response = send_request('download', data)
     return response
 
+def list_user_files(username, password):
+    data = {
+        'username': username,
+        'password': password
+    }
+    response = send_request('list_files', data)
+    return response
+
 if __name__ == '__main__':
     # Example usage:
     register_response = register('john123', 'password123', 'public_key', 'encrypted_private_key')
@@ -82,3 +90,6 @@ if __name__ == '__main__':
     
     download_response = download_user_files('john123', 'password123')
     print(download_response)
+    
+    list_file_response = list_user_files('john123', 'password123')
+    print(list_file_response)
