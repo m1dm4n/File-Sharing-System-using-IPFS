@@ -1,1 +1,5 @@
 enkai.id.vn/
+blocks/
+instance/
+.env
+.vs/

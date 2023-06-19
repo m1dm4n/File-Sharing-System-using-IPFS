@@ -8,6 +8,7 @@ from sqlalchemy import create_engine, Column, String, ForeignKey, Integer
 from sqlalchemy.orm import sessionmaker, relationship, declarative_base
 import base64
 import signal
+from datetime import datetime
 
 block_size = 4 * 1024 * 1024
 server_address = ('0.0.0.0', 5000)
@@ -69,7 +70,6 @@ def handle_register(data):
 
         response = {'success': True, 'message': 'Registration successful'}
 
-    print(response)
     return response
 
 def handle_login(data):
@@ -91,19 +91,18 @@ def handle_login(data):
     else:
         response = {'success': False, 'message': 'User not found'}
 
-    print(response)
     return response
 
 def handle_upload(data):
     username = data['username']
-    file_name = data['file_name']
-    file_hash = data['file_hash']
+    file_name: str = data['file_name']
+    file_hash: str = data['file_hash']
     file_content = base64.b64decode(data['file_content'])
     
     # Calculate the SHA256 hash of the file content
     file_content_hash = hashlib.sha256(file_content).hexdigest()
     
-    if file_content_hash != file_hash:
+    if file_content_hash != file_hash.lower():
         return {'success': False, 'message': "File's hash mismatch"}
     
     if not handle_login(data)['success']:
@@ -148,7 +147,6 @@ def handle_upload(data):
     else:
         response = {'success': False, 'message': 'User not found'}
 
-    print(response)
     return response
 
 def handle_download_request(data):
@@ -193,7 +191,6 @@ def handle_download_request(data):
             'message': 'File not found'
         }
 
-    print(response)
     return response
 
 def handle_download_request2(data):
@@ -268,19 +265,24 @@ def handle_list_files(data):
     else:
         response = {'success': False, 'message': 'User not found'}
 
-    print(response)
     return response
 
 def handle_request(client_socket):
     while True:
         try:
             # Receive and parse the request
-            request_data = client_socket.recv(4096).decode()
-            request = json.loads(request_data)
+            buffer = ""
+            while True:         
+                request_data: bytes = client_socket.recv(4096).decode()
+                buffer += request_data
+                if request_data.endswith('!endf!'):
+                    buffer = buffer.replace('!endf!', '')
+                    break
+            request = json.loads(buffer)
 
             action = request['action']
             data = request['data']
-            print(data)
+            print(datetime.now().date(), datetime.now().strftime("%H:%M:%S"), action, data)
             
             # Perform action based on the request
             if action == 'register':
@@ -301,7 +303,9 @@ def handle_request(client_socket):
 
             # Send the response back to the client
             response_data = json.dumps(response).encode()
-            client_socket.sendall(response_data)
+            if len(response_data) < 4096:
+                print(response_data)
+            client_socket.sendall(response_data + b'!endf!')
         except Exception as e:
             print(e)
             break
