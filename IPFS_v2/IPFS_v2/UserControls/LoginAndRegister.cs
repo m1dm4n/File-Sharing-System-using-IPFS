@@ -65,7 +65,7 @@ namespace IPFS_v2.UserControls
 
         private bool validateLogin(string username, string password)
         {
-            string json = string.Format("{{\"action\": \"login\",\"data\": {{\"username\": \"{0}\", \"password\": \"{1}\"}}}}",username, password);
+            string json = string.Format("{{\"action\": \"login\",\"data\": {{\"username\": \"{0}\", \"password\": \"{1}\"}}}}!endf!", username, password);
             SharedConnection.sendData(json);
             string result = SharedConnection.receiveData();
             JObject jsonObject = JObject.Parse(result);
@@ -74,7 +74,7 @@ namespace IPFS_v2.UserControls
 
         private bool checkAccount(string username, string password, string privateKey, string publicKey)
         {
-            string json = string.Format("{{\"action\": \"register\",\"data\": {{\"username\": \"{0}\", \"password\": \"{1}\",\"public_key\":\"{2}\",\"encrypted_private_key\":\"{3}\"}}}}",username,password,publicKey,privateKey);
+            string json = string.Format("{{\"action\": \"register\",\"data\": {{\"username\": \"{0}\", \"password\": \"{1}\",\"public_key\":\"{2}\",\"encrypted_private_key\":\"{3}\"}}}}!endf!", username,password,publicKey,privateKey);
             SharedConnection.sendData(json);
             string result = SharedConnection.receiveData();
             JObject jsonObject = JObject.Parse(result);

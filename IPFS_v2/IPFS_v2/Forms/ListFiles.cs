@@ -38,7 +38,7 @@ namespace IPFS_v2
 
                 //    //} while (true);
                 //}
-                string json = string.Format("{{\"action\": \"list_files\",\"data\": {{\"username\": \"{0}\", \"password\": \"{1}\"}}}}", username, password);
+                string json = string.Format("{{\"action\": \"list_files\",\"data\": {{\"username\": \"{0}\", \"password\": \"{1}\"}}}}!endf!", username, password);
                 SharedConnection.sendData(json);
                 string result = SharedConnection.receiveData();
                 //MessageBox.Show(result);
@@ -65,31 +65,35 @@ namespace IPFS_v2
             }
         }
 
-        private void download_handler(string username, string password, string hashID)
+        private void download_handler(string username, string password, string hashID, string file_name = "")
         {
             try
             {
-                string json = string.Format("{{\"action\": \"download\",\"data\": {{\"username\": \"{0}\", \"password\": \"{1}\",\"file_hash\":\"{2}\"}}}}", username, password, hashID);
-                SharedConnection.sendData(json);
-                string result = SharedConnection.receiveData();
-                JObject jsonObject = JObject.Parse(result);
-                bool success = (bool)jsonObject["success"];
-                if (success)
+                var ofd = new SaveFileDialog();
+                if (string.IsNullOrEmpty(file_name))
                 {
-                    string fileContent = (string)jsonObject["file_content"];
-                    var ofd = new SaveFileDialog();
                     ofd.FileName = hashID;
-                    var res = ofd.ShowDialog();
-                    if (res == DialogResult.OK)
+                }
+                else
+                {
+                    ofd.FileName = file_name;
+                }
+                var res = ofd.ShowDialog();
+                if (res == DialogResult.OK)
+                {
+                    string json = string.Format("{{\"action\": \"download\",\"data\": {{\"username\": \"{0}\", \"password\": \"{1}\",\"file_hash\":\"{2}\"}}}}!endf!", username, password, hashID);
+                    SharedConnection.sendData(json);
+                    string result = SharedConnection.receiveData();
+                    JObject jsonObject = JObject.Parse(result);
+                    bool success = (bool)jsonObject["success"];
+                    if (success)
                     {
-
+                        string fileContent = (string)jsonObject["file_content"];
                         var filePath = ofd.FileName;
-                        
                         File.WriteAllBytes(filePath, System.Convert.FromBase64String(fileContent));
+
                     }
                 }
-
-                MessageBox.Show(result);
             }
             catch (Exception ex)
             {
@@ -97,18 +101,20 @@ namespace IPFS_v2
             }
         }
 
-        private void upload_handler(string username, string password, string hashID, string fileContent, string fileName)
+        private bool upload_handler(string username, string password, string hashID, string fileContent, string fileName)
         {
             try
             {
-                string json = string.Format("{{\"action\": \"upload\",\"data\": {{\"username\": \"{0}\", \"password\": \"{1}\",\"file_hash\":\"{2}\",\"file_content\":\"{3}\",\"file_name\":\"{4}\"}}}}", username, password, hashID, fileContent, fileName);
+                string json = string.Format("{{\"action\": \"upload\",\"data\": {{\"username\": \"{0}\", \"password\": \"{1}\",\"file_hash\":\"{2}\",\"file_content\":\"{3}\",\"file_name\":\"{4}\"}}}}!endf!", username, password, hashID, fileContent, fileName);
                 SharedConnection.sendData(json);
                 string result = SharedConnection.receiveData();
-                MessageBox.Show(result);
+                JObject keyValuePairs = JObject.Parse(result);
+                return (bool)keyValuePairs["success"];
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "Upload Error");
+                return false;
             }
         }
 
@@ -164,7 +170,7 @@ namespace IPFS_v2
             var focusedItem = listView1.FocusedItem;
             if (focusedItem != null)
             {
-                download_handler(username, password, focusedItem.SubItems[1].Text);
+                download_handler(username, password, focusedItem.SubItems[1].Text, focusedItem.SubItems[0].Text);
             }
         }
 
@@ -173,7 +179,15 @@ namespace IPFS_v2
             string fileContent = System.Convert.ToBase64String(File.ReadAllBytes(selectedFilePath));
             string fileName = Path.GetFileName(selectedFilePath);
             string fileHash = Main.SHA256CheckSum(selectedFilePath);
-            upload_handler(username, password, fileHash, fileContent, fileName);
+            MessageBox.Show(fileContent + "\n" + fileName + "\n" + fileHash);
+            bool result = upload_handler(username, password, fileHash, fileContent, fileName);
+            if (result)
+            {
+                ListViewItem item = new ListViewItem(fileName);
+                item.SubItems.Add(fileHash);
+                // Add the ListViewItem to the ListView
+                listView1.Items.Add(item);
+            }
         }
 
         private void textBoxDownloadHash_Leave(object sender, EventArgs e)
@@ -185,6 +199,4 @@ namespace IPFS_v2
             }
         }
     }
-
-
 }
