@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Security.Cryptography.X509Certificates;
 using System.Net.Http;
 using System.Windows.Forms;
+using System.Runtime.CompilerServices;
 
 namespace IPFS_v2
 {
@@ -26,6 +27,7 @@ namespace IPFS_v2
             } catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "Error");
+                
             }
         }
 
@@ -46,9 +48,23 @@ namespace IPFS_v2
         {
             try
             {
-                int bytesRead = sslStream.Read(buffer, 0, buffer.Length);
-                string response = Encoding.UTF8.GetString(buffer, 0, bytesRead);
-                return response;
+                StringBuilder response = new StringBuilder();
+                //while (true)
+                //{
+                //    int bytesRead = sslStream.Read(buffer, 0, buffer.Length);
+                //    response += Encoding.UTF8.GetString(buffer, 0, bytesRead);
+                //}
+                while (true)
+                {
+                    int bytesRead = sslStream.Read(buffer, 0, buffer.Length);
+                    response.Append(Encoding.UTF8.GetString(buffer, 0, bytesRead));
+
+                    if (response.ToString().Contains("!endf!"))
+                    {
+                        break;
+                    }
+                }
+                return response.ToString().Replace("!endf!","");
             }
             catch (Exception ex)
             {
