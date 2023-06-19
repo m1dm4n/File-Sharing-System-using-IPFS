@@ -51,7 +51,7 @@ namespace IPFS_v2
             using (SHA256 SHA256 = SHA256Managed.Create())
             {
                 using (FileStream fileStream = File.OpenRead(filePath))
-                    return Convert.ToBase64String(SHA256.ComputeHash(fileStream));
+                    return byteToHex(SHA256.ComputeHash(fileStream)).ToLower();
             }
         }
 

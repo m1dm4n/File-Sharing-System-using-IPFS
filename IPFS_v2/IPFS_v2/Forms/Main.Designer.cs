@@ -34,16 +34,16 @@
             // 
             // panelContainer
             // 
-            this.panelContainer.Location = new System.Drawing.Point(0, 75);
+            this.panelContainer.Location = new System.Drawing.Point(0, 106);
             this.panelContainer.Name = "panelContainer";
-            this.panelContainer.Size = new System.Drawing.Size(520, 398);
+            this.panelContainer.Size = new System.Drawing.Size(520, 367);
             this.panelContainer.TabIndex = 0;
             // 
             // label1
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Arial", 16.2F, System.Drawing.FontStyle.Bold);
-            this.label1.Location = new System.Drawing.Point(73, 18);
+            this.label1.Location = new System.Drawing.Point(74, 9);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(369, 33);
             this.label1.TabIndex = 1;
