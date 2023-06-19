@@ -28,6 +28,7 @@ S:\!UIT\LTMang\DoAn\File-Sharing-System-using-IPFS\IPFS_v2\IPFS_v2\bin\Debug\Sys
 S:\!UIT\LTMang\DoAn\File-Sharing-System-using-IPFS\IPFS_v2\IPFS_v2\obj\Debug\IPFS_v2.csproj.CopyComplete
 S:\!UIT\LTMang\DoAn\File-Sharing-System-using-IPFS\IPFS_v2\IPFS_v2\bin\Debug\Newtonsoft.Json.dll
 S:\!UIT\LTMang\DoAn\File-Sharing-System-using-IPFS\IPFS_v2\IPFS_v2\bin\Debug\Newtonsoft.Json.xml
+<<<<<<< HEAD
 D:\Study\HK4\LTM\Project\File-Sharing-System-using-IPFS\IPFS_v2\IPFS_v2\bin\Debug\IPFS_v2.exe.config
 D:\Study\HK4\LTM\Project\File-Sharing-System-using-IPFS\IPFS_v2\IPFS_v2\bin\Debug\IPFS_v2.exe
 D:\Study\HK4\LTM\Project\File-Sharing-System-using-IPFS\IPFS_v2\IPFS_v2\bin\Debug\Newtonsoft.Json.dll
@@ -50,3 +51,24 @@ D:\Study\HK4\LTM\Project\File-Sharing-System-using-IPFS\IPFS_v2\IPFS_v2\bin\Debu
 D:\Study\HK4\LTM\Project\File-Sharing-System-using-IPFS\IPFS_v2\IPFS_v2\bin\Debug\en-150\IPFS_v2.resources.dll
 D:\Study\HK4\LTM\Project\File-Sharing-System-using-IPFS\IPFS_v2\IPFS_v2\obj\Debug\IPFS_v2.FormListFiles.en-150.resources
 D:\Study\HK4\LTM\Project\File-Sharing-System-using-IPFS\IPFS_v2\IPFS_v2\obj\Debug\en-150\IPFS_v2.resources.dll
+=======
+D:\Documents\Code\LTM\File-Sharing-System-using-IPFS\IPFS_v2\IPFS_v2\bin\Debug\IPFS_v2.exe.config
+D:\Documents\Code\LTM\File-Sharing-System-using-IPFS\IPFS_v2\IPFS_v2\bin\Debug\IPFS_v2.exe
+D:\Documents\Code\LTM\File-Sharing-System-using-IPFS\IPFS_v2\IPFS_v2\bin\Debug\IPFS_v2.pdb
+D:\Documents\Code\LTM\File-Sharing-System-using-IPFS\IPFS_v2\IPFS_v2\bin\Debug\Newtonsoft.Json.dll
+D:\Documents\Code\LTM\File-Sharing-System-using-IPFS\IPFS_v2\IPFS_v2\bin\Debug\Sodium.Core.dll
+D:\Documents\Code\LTM\File-Sharing-System-using-IPFS\IPFS_v2\IPFS_v2\bin\Debug\System.ValueTuple.dll
+D:\Documents\Code\LTM\File-Sharing-System-using-IPFS\IPFS_v2\IPFS_v2\bin\Debug\Newtonsoft.Json.xml
+D:\Documents\Code\LTM\File-Sharing-System-using-IPFS\IPFS_v2\IPFS_v2\bin\Debug\System.ValueTuple.xml
+D:\Documents\Code\LTM\File-Sharing-System-using-IPFS\IPFS_v2\IPFS_v2\obj\Debug\IPFS_v2.csproj.AssemblyReference.cache
+D:\Documents\Code\LTM\File-Sharing-System-using-IPFS\IPFS_v2\IPFS_v2\obj\Debug\IPFS_v2.csproj.SuggestedBindingRedirects.cache
+D:\Documents\Code\LTM\File-Sharing-System-using-IPFS\IPFS_v2\IPFS_v2\obj\Debug\IPFS_v2.FormListFiles.resources
+D:\Documents\Code\LTM\File-Sharing-System-using-IPFS\IPFS_v2\IPFS_v2\obj\Debug\IPFS_v2.Main.resources
+D:\Documents\Code\LTM\File-Sharing-System-using-IPFS\IPFS_v2\IPFS_v2\obj\Debug\IPFS_v2.Properties.Resources.resources
+D:\Documents\Code\LTM\File-Sharing-System-using-IPFS\IPFS_v2\IPFS_v2\obj\Debug\IPFS_v2.UserControls.LoginOrRegister.resources
+D:\Documents\Code\LTM\File-Sharing-System-using-IPFS\IPFS_v2\IPFS_v2\obj\Debug\IPFS_v2.csproj.GenerateResource.cache
+D:\Documents\Code\LTM\File-Sharing-System-using-IPFS\IPFS_v2\IPFS_v2\obj\Debug\IPFS_v2.csproj.CoreCompileInputs.cache
+D:\Documents\Code\LTM\File-Sharing-System-using-IPFS\IPFS_v2\IPFS_v2\obj\Debug\IPFS_v2.csproj.CopyComplete
+D:\Documents\Code\LTM\File-Sharing-System-using-IPFS\IPFS_v2\IPFS_v2\obj\Debug\IPFS_v2.exe
+D:\Documents\Code\LTM\File-Sharing-System-using-IPFS\IPFS_v2\IPFS_v2\obj\Debug\IPFS_v2.pdb
+>>>>>>> d8f68ef1e2f16e5ba2897876be50003070734d89
