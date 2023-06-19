@@ -167,5 +167,13 @@ namespace IPFS_v2.UserControls
             }
 
         }
+
+        private void textBoxPassword_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == (char)Keys.Enter)
+            {
+                this.buttonLoginOrRegister.PerformClick();
+            }
+        }
     }
 }

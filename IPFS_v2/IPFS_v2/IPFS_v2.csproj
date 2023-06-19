@@ -78,6 +78,9 @@
     <Compile Include="UserControls\LoginAndRegister.Designer.cs">
       <DependentUpon>LoginAndRegister.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Forms\ListFiles.en-150.resx">
+      <DependentUpon>ListFiles.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\ListFiles.resx">
       <DependentUpon>ListFiles.cs</DependentUpon>
     </EmbeddedResource>
@@ -92,6 +95,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <EmbeddedResource Include="UserControls\LoginAndRegister.resx">
       <DependentUpon>LoginAndRegister.cs</DependentUpon>
@@ -112,6 +116,21 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Images\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Screenshot 2023-04-18 221306.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Screenshot 2023-02-15 101953.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\copka.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ditconmemaybuonvailon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cheems lo..png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Baseclass.Contrib.Nuget.Output.2.4.4\build\Baseclass.Contrib.Nuget.Output.targets" Condition="Exists('..\packages\Baseclass.Contrib.Nuget.Output.2.4.4\build\Baseclass.Contrib.Nuget.Output.targets')" />

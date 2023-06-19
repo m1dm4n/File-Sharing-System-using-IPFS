@@ -174,6 +174,21 @@ namespace IPFS_v2
             }
         }
 
+        private void labelListFiles_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void toolStripMenuItem2_Click(object sender, EventArgs e)
+        {
+            var focusedItem = listView1.FocusedItem;
+            if (focusedItem != null)
+            {
+                Clipboard.SetText(focusedItem.SubItems[1].Text);
+            }
+            lbStatus.Text = "File hash copied";
+          }
+
         private void buttonUpload_Click(object sender, EventArgs e)
         {
             string fileContent = System.Convert.ToBase64String(File.ReadAllBytes(selectedFilePath));
