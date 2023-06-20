@@ -67,10 +67,10 @@ class MyDHTClient(CmdApp):
 
                 sock.close()
                 return jsonloads(data)
-            except socket_error:
-                errno, errstr = sys.exc_info()[:2]
-                logging.error("Error connecting to server: %s", errstr)
-
+            except Exception as E:
+                sock.close()
+                logging.error("Error connecting to server: %s", str(E))
+            
         logging.error(
             "Server (%s) did not respond during 3 tries, giving up", str(server))
         return None

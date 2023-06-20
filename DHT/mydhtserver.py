@@ -74,8 +74,6 @@ class MyDHTServer(CmdApp):
         """ Adds a new server to all existing nodes and
             returns a |-separated list of the current ring
             ","  the number of replicas used.
-            Example:
-            localhost:50140|localhost:50141,3
         """
         self.ring_lock.acquire()
         logging.debug("adding: %s", new_node)
@@ -254,7 +252,7 @@ class MyDHTServer(CmdApp):
                 logging.debug("Performed command %s (failures: %d)", command, failures)
         return status
 
-    def server_thread(self, client_sock):
+    def server_thread(self, client_sock, client_addr):
         """ Thread that handles a client
             `client_sock` is the socket where the client is connected
             perform the operation and connect to another server if necessary
@@ -371,7 +369,7 @@ class MyDHTServer(CmdApp):
                 client_sock, client_addr = server_sock.accept()
                 thread = threading.Thread(
                     target=self.server_thread, 
-                    args=(client_sock,)
+                    args=(client_sock, client_addr,)
                 )
                 thread.start()
                 print(f'Thread for {client_addr} started')

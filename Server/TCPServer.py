@@ -9,13 +9,18 @@ from sqlalchemy.orm import sessionmaker, relationship, declarative_base
 import base64
 import signal
 from datetime import datetime
+import sys
+from DHT.dhtcommand import DHTCommand
+from DHT.mydhtclient import MyDHTClient
+from DHT.HashRing import Server
 
 block_size = 4 * 1024 * 1024
 server_address = ('0.0.0.0', 5000)
 certificate_file = './enkai.id.vn/certificate.crt'
 private_key_file = './enkai.id.vn/ec-private-key.pem'
 db_connection_string = 'postgresql://postgres:hoang@localhost:5432/IPFS_manager'
-
+HOST = int(sys.argv[2])
+PORT = int(sys.argv[3])
 terminate_server = False
 
 Base = declarative_base()
@@ -93,6 +98,20 @@ def handle_login(data):
 
     return response
 
+
+def DHTRequestUpload(key, data):
+    dht = MyDHTClient(False)
+    command = DHTCommand(DHTCommand.PUT, key, data.hex())
+    response = dht.sendcommand(Server(HOST, PORT), command)
+    return response
+
+
+def DHTRequestDownload(key):
+    dht = MyDHTClient(False)
+    command = DHTCommand(DHTCommand.GET, key)
+    response = dht.sendcommand(Server(HOST, PORT), command)
+    return response
+
 def handle_upload(data):
     username = data['username']
     file_name: str = data['file_name']
@@ -132,11 +151,10 @@ def handle_upload(data):
                 block_data = file_content[i:i+block_size]
                 block_hash = hashlib.sha256(block_data).hexdigest()
 
-                # Save the block content to a local file with the block hash as the filename
-                block_path = './blocks/' + block_hash
-                with open(block_path, 'wb') as block_file:
-                    block_file.write(block_data)
-
+                # Save the block content to a local file with the block hash as the filename                
+                res = DHTRequestUpload(block_hash, block_data.hex())
+                if res["success"] is False:
+                    return {'success': False, 'message': 'File uploaded unsuccessfully'}
                 block = Block(block_hash=block_hash, file_hash=file_hash, block_index=index)
                 session.add(block)
                 blocks.append(block)
@@ -162,10 +180,20 @@ def handle_download_request(data):
         # Merge the blocks into the complete file content
         file_content = b''
         for block in blocks:
-            block_path = './blocks/' + block.block_hash
-            with open(block_path, 'rb') as block_file:
-                file_content += block_file.read()
-
+            block_hash = block.block_hash.lower()
+            response = DHTRequestDownload(block_hash)
+            if response["success"]:
+                _block_data = bytes.fromhex(response["value"])
+                if hashlib.sha256(_block_data).hexdigest() != block_hash:
+                    return {
+                        'success': False,
+                        'message': "Loss of data integrity",
+                    }
+            else:
+                return {
+                    'success': False,
+                    'message': 'File downloaded unsuccessfully',
+                }
         # Calculate the hash of the downloaded file content
         downloaded_file_hash = hashlib.sha256(file_content).hexdigest()
 
@@ -226,9 +254,20 @@ def handle_download_request2(data):
             # Merge the blocks into the complete file content
             file_content = b''
             for block in blocks:
-                block_path = './blocks/' + block.block_hash
-                with open(block_path, 'rb') as block_file:
-                    file_content += block_file.read()
+                block_hash = block.block_hash.lower()
+                response = DHTRequestDownload(block_hash)
+                if response["success"]:
+                    _block_data = bytes.fromhex(response["value"])
+                    if hashlib.sha256(_block_data).hexdigest() != block_hash:
+                        return {
+                            'success': False,
+                            'message': "Loss of data integrity",
+                        }
+                else:
+                    return {
+                        'success': False,
+                        'message': 'File downloaded unsuccessfully',
+                    }
 
             # Calculate the hash of the downloaded file content
             downloaded_file_hash = hashlib.sha256(file_content).hexdigest()
