@@ -193,6 +193,7 @@ def handle_download_request(data):
 
     return response
 
+
 def handle_download_request2(data):
     username = data['username']
     
@@ -271,12 +272,12 @@ def handle_request(client_socket):
     while True:
         try:
             # Receive and parse the request
-            buffer = ""
+            buffer = b""
             while True:         
-                request_data: bytes = client_socket.recv(4096).decode()
+                request_data: bytes = client_socket.recv(4096)
                 buffer += request_data
                 if request_data.endswith('!endf!'):
-                    buffer = buffer.replace('!endf!', '')
+                    buffer = buffer.rstrip('!endf!')
                     break
             request = json.loads(buffer)
 
