@@ -1,8 +1,9 @@
 from helper import Hashing
-from os import remove as __fileremove, path
+from os import remove as __fileremove, path as __path, makedirs as __mkdir
 
-PREFIX = "/".join(str(__file__).split("/")[:-1]) + '/HashTableValue/'
-
+PREFIX = __path.dirname(__path.abspath(__file__)) + '/HashTableValue/'
+if not __path.exists(PREFIX):
+   __mkdir(PREFIX)
 
 class StorageHashTable:
     def __init__(self) -> None:
