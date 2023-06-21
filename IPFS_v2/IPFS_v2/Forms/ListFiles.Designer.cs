@@ -41,13 +41,13 @@ namespace IPFS_v2
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.textBoxSelectedFile = new System.Windows.Forms.TextBox();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
+            this.listView1 = new System.Windows.Forms.ListView();
+            this.columnHeaderName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeaderHashID = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.labelListFiles = new System.Windows.Forms.Label();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
-            this.listView1 = new System.Windows.Forms.ListView();
-            this.columnHeaderName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeaderHashID = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
@@ -121,6 +121,29 @@ namespace IPFS_v2
             this.tableLayoutPanel3.Controls.Add(this.labelListFiles, 0, 0);
             this.tableLayoutPanel3.Name = "tableLayoutPanel3";
             // 
+            // listView1
+            // 
+            resources.ApplyResources(this.listView1, "listView1");
+            this.listView1.BackgroundImage = global::IPFS_v2.Properties.Resources.cheems_lo_;
+            this.listView1.BackgroundImageTiled = true;
+            this.listView1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnHeaderName,
+            this.columnHeaderHashID});
+            this.listView1.FullRowSelect = true;
+            this.listView1.HideSelection = false;
+            this.listView1.Name = "listView1";
+            this.listView1.UseCompatibleStateImageBehavior = false;
+            this.listView1.View = System.Windows.Forms.View.Details;
+            this.listView1.MouseClick += new System.Windows.Forms.MouseEventHandler(this.listView1_MouseClick);
+            // 
+            // columnHeaderName
+            // 
+            resources.ApplyResources(this.columnHeaderName, "columnHeaderName");
+            // 
+            // columnHeaderHashID
+            // 
+            resources.ApplyResources(this.columnHeaderHashID, "columnHeaderHashID");
+            // 
             // labelListFiles
             // 
             resources.ApplyResources(this.labelListFiles, "labelListFiles");
@@ -149,29 +172,6 @@ namespace IPFS_v2
             resources.ApplyResources(this.toolStripMenuItem2, "toolStripMenuItem2");
             this.toolStripMenuItem2.Name = "toolStripMenuItem2";
             this.toolStripMenuItem2.Click += new System.EventHandler(this.toolStripMenuItem2_Click);
-            // 
-            // listView1
-            // 
-            resources.ApplyResources(this.listView1, "listView1");
-            this.listView1.BackgroundImage = global::IPFS_v2.Properties.Resources.cheems_lo_;
-            this.listView1.BackgroundImageTiled = true;
-            this.listView1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.columnHeaderName,
-            this.columnHeaderHashID});
-            this.listView1.FullRowSelect = true;
-            this.listView1.HideSelection = false;
-            this.listView1.Name = "listView1";
-            this.listView1.UseCompatibleStateImageBehavior = false;
-            this.listView1.View = System.Windows.Forms.View.Details;
-            this.listView1.MouseClick += new System.Windows.Forms.MouseEventHandler(this.listView1_MouseClick);
-            // 
-            // columnHeaderName
-            // 
-            resources.ApplyResources(this.columnHeaderName, "columnHeaderName");
-            // 
-            // columnHeaderHashID
-            // 
-            resources.ApplyResources(this.columnHeaderHashID, "columnHeaderHashID");
             // 
             // FormListFiles
             // 

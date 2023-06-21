@@ -19,10 +19,10 @@ namespace IPFS_v2.UserControls
         public LoginOrRegister()
         {
             InitializeComponent();
-            textBoxPassword.Text = "password123";
-            textBoxUsername.Text = "john123";
-            textBoxPassword.ForeColor = Color.Black;
-            textBoxUsername.ForeColor = Color.Black;
+            //textBoxPassword.Text = "password123";
+            //textBoxUsername.Text = "john123";
+            //textBoxPassword.ForeColor = Color.Black;
+            //textBoxUsername.ForeColor = Color.Black;
         }
 
         private void textBoxUsername_Enter(object sender, EventArgs e)
