@@ -49,8 +49,8 @@ class MyDHTTable():
         """ Perform `command` on this map
             return BAD_COMMAND if the command is invalid
         """
-        self._lock.acquire()
         status = {"success": False}
+        self._lock.acquire()
         if command.action == DHTCommand.PUT:
             """ Put key and value in map """
             _value = bytes.fromhex(command.value)
@@ -64,7 +64,7 @@ class MyDHTTable():
 
         elif command.action == DHTCommand.GET or command.action == DHTCommand.HTTPGETKEY:
             """ Get value from map if key exists """
-            _value = self._map.get(command.key, None)
+            _value = self._map.get(command.key, None).hex()
             if _value is not None:
                 status["success"] = True
                 status["value"] = _value

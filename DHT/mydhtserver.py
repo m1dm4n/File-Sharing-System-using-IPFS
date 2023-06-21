@@ -161,8 +161,7 @@ class MyDHTServer(CmdApp):
             for server in key_is_at:
                 command = DHTCommand(DHTCommand.HASKEY, key)
                 status = self.client.sendcommand(server, command)
-                if status["success"]:
-                    # None was returned, servers is probably down
+                if not status["success"]:
                     logging.error(
                         "Got no timestamp from %s, could be dead", str(server))
                     continue
@@ -281,8 +280,7 @@ class MyDHTServer(CmdApp):
                 status = self.remove_node(command.key, command.forwarded)
             elif command.action == DHTCommand.WHEREIS:
                 # Just return the hostnames that holds a key
-                status = ", ".join(
-                    map(lambda s: str(s), self.hash_ring.get_replicas(command.key)))
+                status["nodes"] = list(map(str, self.hash_ring.get_replicas(command.key)))
             elif command.action == DHTCommand.BALANCE:
                 # Load balance this node
                 status = self.load_balance(command.forwarded)
@@ -295,10 +293,9 @@ class MyDHTServer(CmdApp):
                 status = self.dht_table.perform(command)
         except Exception as E:
             logging.error(str(E))
-        finally:
             # Send response to client
-            status = jsondumps(status).encode()
-            self.client.send_to_socket(status, client_sock)
+        status = jsondumps(status).encode()
+        self.client.send_to_socket(status, client_sock)
 
         # Shutdown write end of socket
         client_sock.shutdown(SHUT_WR)

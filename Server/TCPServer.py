@@ -189,6 +189,7 @@ def handle_download_request(data):
                         'success': False,
                         'message': "Loss of data integrity",
                     }
+                file_content += _block_data
             else:
                 return {
                     'success': False,
@@ -263,6 +264,7 @@ def handle_download_request2(data):
                             'success': False,
                             'message': "Loss of data integrity",
                         }
+                    file_content += _block_data
                 else:
                     return {
                         'success': False,
