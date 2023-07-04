@@ -44,6 +44,10 @@ namespace IPFS_v2
                 //MessageBox.Show(result);
                 JObject jsonObject = JObject.Parse(result);
                 bool success = (bool)jsonObject["success"];
+                if (success)
+                {
+                    lbStatus.Text = "Load list success!";
+                }
                 JArray filesArray = (JArray)jsonObject["files"];
 
                 // Add data to the ListView
@@ -65,7 +69,7 @@ namespace IPFS_v2
             }
         }
 
-        private void download_handler(string username, string password, string hashID, string file_name = "")
+        private void  download_handler(string username, string password, string hashID, string file_name = "")
         {
             try
             {
@@ -88,10 +92,16 @@ namespace IPFS_v2
                     bool success = (bool)jsonObject["success"];
                     if (success)
                     {
+                        lbStatus.Text = "Download success!";
                         string fileContent = (string)jsonObject["file_content"];
                         var filePath = ofd.FileName;
                         File.WriteAllBytes(filePath, System.Convert.FromBase64String(fileContent));
 
+
+                    }
+                    else
+                    {
+                        lbStatus.Text = "Download failed.";
                     }
                 }
             }
@@ -202,6 +212,11 @@ namespace IPFS_v2
                 item.SubItems.Add(fileHash);
                 // Add the ListViewItem to the ListView
                 listView1.Items.Add(item);
+                lbStatus.Text = "Upload success!";
+            }
+            else
+            {
+                lbStatus.Text = "Upload failed!";
             }
         }
 
