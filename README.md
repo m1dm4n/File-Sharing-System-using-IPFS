@@ -1,18 +1,14 @@
-# A Secure File Sharing System Based on IPFS and Blockchain
+# A Secure File Sharing System Based on IPFS
 
 ## System structure
 
 ```
 .
-├── src/
-│   ├── Blockchain/
-│   ├── TCP/
-│   ├── IPFSNode/
-│   ├── RPC/
-│   └── GUI/
-|   |__ DHT/
-├── .config
-└── setup.py
+│── Client sample
+│── DHT/
+│── Database/
+│── Clien GUI/
+│── Server(RPC)/
 ```
 
 ### Blockchain
