@@ -16,7 +16,6 @@ from cmdapp import CmdApp
 from dhtcommand import DHTCommand
 from mydhtclient import MyDHTClient
 from helper import *
-_block = 4096
 
 logging.basicConfig(level=logging.DEBUG)
 
@@ -293,6 +292,7 @@ class MyDHTServer(CmdApp):
                 status = self.dht_table.perform(command)
         except Exception as E:
             logging.error(str(E))
+        
             # Send response to client
         status = jsondumps(status).encode()
         self.client.send_to_socket(status, client_sock)
@@ -366,14 +366,15 @@ class MyDHTServer(CmdApp):
                 client_sock, client_addr = server_sock.accept()
                 thread = threading.Thread(
                     target=self.server_thread, 
-                    args=(client_sock, client_addr,)
+                    args=(client_sock, client_addr,),
+                    daemon=True
                 )
                 thread.start()
                 print(f'Thread for {client_addr} started')
         except socket_error:
             errno, errstr = sys.exc_info()[:2]
             logging.error("Unable to bind to socket: %s", errstr)
-        except RuntimeError as e:
+        except Exception as e:
             logging.error("%s", e)
         finally:
             server_sock.close()

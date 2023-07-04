@@ -3,3 +3,5 @@ blocks/
 instance/
 .env
 .vs/
+.idea
+**/.*
